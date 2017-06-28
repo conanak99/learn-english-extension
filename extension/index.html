@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Học tiếng Anh cùng gái xinh</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="css/semantic.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+
+<body ng-app="app" ng-controller="MainController">
+  <h1 class="ui header main-header">Học tiếng Anh cùng gái xinh</h1>
+  <div class="ui label score">
+    <i class="trophy icon"></i>Điểm: {{score}}
+  </div>
+
+  <div ng-view></div>
+</body>
+<script src="js/libs/jquery-3.2.1.min.js"></script>
+<script src="js/libs/semantic.min.js"></script>
+
+<script src="js/libs/angular.min.js"></script>
+<script src="js/libs/angular-route.min.js"></script>
+
+<script src="js/app/words.js"></script>
+<script src="js/app/main.js"></script>
+
+</html>

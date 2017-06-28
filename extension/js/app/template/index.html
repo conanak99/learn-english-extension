@@ -1,0 +1,13 @@
+<div class="index-page">
+  <h2 class="ui horizontal divider header question">
+  {{quiz.question.word}} {{quiz.question.pronounce}}
+  <span class="small">{{quiz.question.type}}</span>
+  </h2>
+
+  <div class="ui grid">
+    <div ng-repeat="answer in quiz.answers" class="eight wide column answer">
+      <button ng-click="goToResult(answer.meaning)"
+       class="ui blue button big compact fluid">{{answer.meaning}}</button>
+    </div>
+  </div>
+</div>

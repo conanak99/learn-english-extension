@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "Học tiếng Anh cùng gái xinh",
+  "description": "Học tiếng Anh cùng gái xinh, còn gì tuyệt dzời hơnnnn",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "logo.png",
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "activeTab",
+    "storage"
+    "https://78tdi7b2n7.execute-api.ap-southeast-1.amazonaws.com/"
+  ]
+}

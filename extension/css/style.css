@@ -1,0 +1,36 @@
+body {
+  font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+  font-size: 100%;
+  width: 600px;
+  padding: 1em;
+}
+
+a, a:focus {
+  outline: none;
+}
+
+.ui.score {
+  float: right;
+  margin-top: -5em;
+}
+
+.ui.header.main-header {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.index-page, .result-page {
+  text-align: center;
+}
+
+.small {
+  font-size: 0.6em;
+}
+
+.ui.header.question {
+  margin-bottom: 1em;
+}
+
+.ui.grid > .column.answer {
+  padding-bottom: 0;
+}

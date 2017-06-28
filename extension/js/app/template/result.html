@@ -1,0 +1,20 @@
+<div class="result-page">
+  <div>
+    <a href="/" class="ui blue button big compact fluid">{{text}}</a>
+
+    <div ng-if="result" class="ui positive message">
+      <div class="header">
+        Đúng rồi, giỏi quá ahihi! Em thưởng nè <i class="heart red icon" />
+      </div>
+    </div>
+
+    <div ng-if="!result" class="ui negative message">
+      <div class="header">
+        Học bài lại đi, lêu lêu.....
+      </div>
+    </div>
+
+    <img class="ui image fluid bordered" ng-src="{{resultUrl}}" />
+    <a style="margin-top: 0.8em" href="/" class="ui blue button big compact fluid">{{text}}</a>
+  </div>
+</div>
