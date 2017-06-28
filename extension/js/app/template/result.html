@@ -1,6 +1,6 @@
 <div class="result-page">
   <div>
-    <a href="/" class="ui blue button big compact fluid">{{text}}</a>
+    <a ng-click="linkClick()" class="ui blue button medium compact fluid">{{text}}</a>
 
     <div ng-if="result" class="ui positive message">
       <div class="header">
@@ -15,6 +15,6 @@
     </div>
 
     <img class="ui image fluid bordered" ng-src="{{resultUrl}}" />
-    <a style="margin-top: 0.8em" href="/" class="ui blue button big compact fluid">{{text}}</a>
+    <a ng-click="linkClick()" style="margin-top: 0.8em" href="/" class="ui blue button medium compact fluid">{{text}}</a>
   </div>
 </div>

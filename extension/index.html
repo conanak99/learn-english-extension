@@ -8,10 +8,16 @@
   <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 
-<body ng-app="app" ng-controller="MainController">
-  <h1 class="ui header main-header">Học tiếng Anh cùng gái xinh</h1>
-  <div class="ui label score">
-    <i class="trophy icon"></i>Điểm: {{score}}
+<body ng-app="app" ng-controller="MainController" class="ui basic segment">
+  <div ng-if="isLoading" class="ui active inverted dimmer">
+    <div class="ui text loader">Đang tải ảnh</div>
+  </div>
+  <p>Học English cùng gái xinh <br> (by <a href="https://toidicodedao.com" target="_blank">Tôi đi code dạo</a>)</p>
+
+  <div class="score-container">
+    <div class="ui label">
+      <i class="trophy icon"></i>Điểm: <strong>{{quizService.score}}</strong>
+    </div>
   </div>
 
   <div ng-view></div>
