@@ -81,6 +81,9 @@ module.factory('ImageService', [
 
           imageStore.normal.forEach(preloadImage);
           imageStore.sexy.forEach(preloadImage);
+        } else {
+          this.imageStore.normal.forEach(preloadImage);
+          this.imageStore.sexy.forEach(preloadImage);
         }
       },
 
@@ -93,6 +96,7 @@ module.factory('ImageService', [
             preloadImage(imageUrl);
           }
         });
+        
         newImages.sexy.forEach(imageUrl => {
           if (this.imageStore.sexy.indexOf(imageUrl) === -1) {
             this.imageStore.sexy.push(imageUrl);
@@ -104,7 +108,7 @@ module.factory('ImageService', [
 
       getRewardImage: function(score) {
         var imageUrl = '';
-        if (score % 5 === 0) {
+        if (score % 4 === 0) {
           imageUrl = this.imageStore.sexy.shift();
         } else {
           imageUrl = this.imageStore.normal.shift();
