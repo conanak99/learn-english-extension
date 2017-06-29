@@ -1,45 +1,36 @@
 let request = require('request');
 
 exports.handler = (event, context, callback) => {
-    let score = event.queryStringParameters.score;
+    let token = 'YOUR_TOKEN_HERE';
+    let sexyPageId = getPageId(true);
+    let normalPageId = getPageId(false);
 
-    if (score) {
-        score = parseInt(score, 10);
-    } else {
+    let promise = Promise.all([
+        getRandomImage(token, normalPageId, 15, 450),
+        getRandomImage(token, sexyPageId, 5, 500)
+    ]);
+
+    promise.then(result => {
+        let response = {
+            normal: result[0],
+            sexy: result[1]
+        }
         callback(null, {
-            statusCode: 400,
-            body: {
-                error: 'A score must be provided'
-            },
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-    }
-
-    let token = '619456688258561|2C1gUON8OWKpSpxmsWPZBRQZ_pc';
-    let pageId = getPageIdBaseOnScore(score);
-
-    getRandomSexyImage(token, pageId, 460) // Facebook error, can get more than 500 offset
-    .then(result => {
-            callback(null, {
                 statusCode: 200,
-                body: {
-                    result: result
-                },
+                body: JSON.stringify(response),
                 headers: {
                     'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
                 }
-            })
+            });
     });
-
 }
 
-function getPageIdBaseOnScore(score) {
+function getPageId(isSexy) {
     var normal = [189695764410814, 429347487112306, 1269826469732326, 323925094473196];
     var sexy = [1786207988368795, 637445302949772, 1224869587565040, 169974406437267];
 
-    if (score % 5 === 0) {
+    if (isSexy) {
         return getRandomElement(sexy);
     } else {
         return getRandomElement(normal);
@@ -51,15 +42,15 @@ function getRandomElement(array) {
     return array[randomIndex];
 }
 
-function getRandomSexyImage(token, pageId, maxIndex) {
-    var randomIndex = Math.floor((Math.random() * maxIndex));
+function getRandomImage(token, pageId, limit, maxIndex) {
+    var randomIndex = Math.floor((Math.random() * (maxIndex - limit)));
 
     return new Promise((resolve, reject) => {
         request({
             url: `https://graph.facebook.com/v2.9/${pageId}/photos/`,
             qs: {
                 fields: "images",
-                limit: 1,
+                limit: limit,
                 offset: randomIndex,
                 access_token: token
             },
@@ -71,8 +62,9 @@ function getRandomSexyImage(token, pageId, maxIndex) {
             }
 
             var rs = JSON.parse(body);
-            var imageUrl = rs.data[0].images[0].source;
-            resolve(imageUrl);
+            var imageUrls = rs.data.map(data => data.images[0].source);
+            //var imageUrl = rs.data[0].images[0].source;
+            resolve(imageUrls);
         });
     });
 };
