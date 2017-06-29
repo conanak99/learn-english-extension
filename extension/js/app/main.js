@@ -37,6 +37,9 @@ module.factory('QuizService', [
         this.score = 0;
         StorageService.setScore(this.score);
       },
+      getWord: function(word) {
+        return words.filter(w => w.word === word)[0];
+      },
       getQuiz: function() {
         const numberOfAnswer = 4;
         const answers = [];
@@ -44,7 +47,9 @@ module.factory('QuizService', [
         let i = 0;
         while (i < numberOfAnswer) {
           let randomAnswer = getRandomElement(words);
-          if (answers.indexOf(randomAnswer) === -1 && randomAnswer.meaning.length > 0) {
+          if (answers.indexOf(randomAnswer) === -1
+              && randomAnswer.word.length > 0
+              && randomAnswer.meaning.length > 0) {
             answers.push(randomAnswer);
             i++
           }
@@ -96,7 +101,7 @@ module.factory('ImageService', [
             preloadImage(imageUrl);
           }
         });
-        
+
         newImages.sexy.forEach(imageUrl => {
           if (this.imageStore.sexy.indexOf(imageUrl) === -1) {
             this.imageStore.sexy.push(imageUrl);
@@ -147,17 +152,17 @@ module.controller('MainController', [
 module.controller('IndexController', [
   '$scope',
   '$location',
+  '$anchorScroll',
   'QuizService',
-  function($scope, $location, QuizService) {
+  function($scope, $location, $anchorScroll, QuizService) {
     $scope.quiz = QuizService.getQuiz();
-
-    console.log($scope.quiz);
+    $anchorScroll('top');
 
     $scope.goToResult = (meaning) => {
       let result = 0;
       if (meaning === $scope.quiz.question.meaning)
         result = 1;
-      $location.path(`/result/${result}`);
+      $location.path(`/result/${result}/${$scope.quiz.question.word}`);
     }
   }
 ]);
@@ -166,15 +171,19 @@ module.controller('ResultController', [
   '$scope',
   '$location',
   '$routeParams',
+  '$anchorScroll',
   'QuizService',
   'ImageService',
-  function($scope, $location, $routeParams, QuizService, ImageService) {
+  function($scope, $location, $routeParams, $anchorScroll, QuizService, ImageService) {
 
     $scope.linkClick = () => {
       $location.path(`/`);
     }
 
+    $anchorScroll('top');
     $scope.result = $routeParams.result === '1';
+
+    $scope.word = QuizService.getWord($routeParams.word);
 
     if ($scope.result) {
       // Use another module to get image
@@ -200,7 +209,7 @@ module.config([
     $routeProvider.when('/', {
       templateUrl: 'js/app/template/quiz.html',
       controller: 'IndexController'
-    }).when('/result/:result', {
+    }).when('/result/:result/:word', {
       templateUrl: 'js/app/template/result.html',
       controller: 'ResultController'
     });
