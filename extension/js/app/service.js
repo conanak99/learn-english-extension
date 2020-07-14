@@ -3,7 +3,21 @@ function getRandomElement(array) {
   return array[randomIndex];
 }
 
-module.factory('StorageService', function() {
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
+
+function getRandomElements(n, array) {
+  shuffleArray(array)
+  return array.slice(0, n)
+}
+
+module.factory('StorageService', function () {
   return {
     getScore() {
       return parseInt(localStorage.getItem('score') || 0);
@@ -13,7 +27,10 @@ module.factory('StorageService', function() {
     },
     getImageStore() {
       var imageStore = localStorage.getItem('imageStore');
-      if (!imageStore) return { normal: [], sexy: []};
+      if (!imageStore) return {
+        normal: [],
+        sexy: []
+      };
       return JSON.parse(imageStore);
     },
     setImageStore(imageStore) {
@@ -24,37 +41,40 @@ module.factory('StorageService', function() {
 
 module.factory('QuizService', [
   'StorageService',
-  function(StorageService) {
+  function (StorageService) {
     return {
       score: StorageService.getScore(),
-      increaseScore: function(number) {
+      increaseScore: function (number) {
         this.score += number;
         StorageService.setScore(this.score);
       },
-      reset: function() {
+      reset: function () {
         this.score = 0;
         StorageService.setScore(this.score);
       },
-      getWord: function(word) {
+      getWord: function (word) {
         return words.filter(w => w.word === word)[0];
       },
-      getQuiz: function() {
+      getQuiz: function () {
         const numberOfAnswer = 4;
         const answers = [];
 
         let i = 0;
         while (i < numberOfAnswer) {
           let randomAnswer = getRandomElement(words);
-          if (answers.indexOf(randomAnswer) === -1
-              && randomAnswer.word.length > 0
-              && randomAnswer.meaning.length > 0) {
+          if (answers.indexOf(randomAnswer) === -1 &&
+            randomAnswer.word.length > 0 &&
+            randomAnswer.meaning.length > 0) {
             answers.push(randomAnswer);
             i++
           }
         }
 
         const question = getRandomElement(answers);
-        return {question, answers};
+        return {
+          question,
+          answers
+        };
       }
     }
   }
@@ -62,7 +82,7 @@ module.factory('QuizService', [
 
 module.factory('ImageService', [
   'StorageService',
-  function(StorageService) {
+  function (StorageService) {
     function preloadImage(imgUrl) {
       let img = new Image();
       img.src = imgUrl;
@@ -70,15 +90,23 @@ module.factory('ImageService', [
 
     return {
       imageStore: StorageService.getImageStore(),
-      fetchImageFromAPI: async() => {
-        var headers = new Headers({'x-api-key': 'qGugB8rM7728ZKbEH8Wxc6mDHic0ijq6iETMiZTh'});
-        var fetchResult = await fetch('https://78tdi7b2n7.execute-api.ap-southeast-1.amazonaws.com/prod/GetRandomGirl', {headers: headers});
-        return await fetchResult.json();
+      fetchImages: async () => {
+        const normalUrl = chrome.runtime.getURL('data/normal.json');
+        const sexyUrl = chrome.runtime.getURL('data/sexy.json');
+
+        const normalImgs = await fetch(normalUrl).then((response) => response.json())
+        const sexyImgs = await fetch(sexyUrl).then((response) => response.json())
+
+
+        return {
+          normal: getRandomElements(20, normalImgs),
+          sexy: getRandomElements(10, sexyImgs)
+        }
       },
 
-      initializeStore: async function() {
+      initializeStore: async function () {
         if (this.imageStore.normal.length === 0) {
-          let imageStore = await this.fetchImageFromAPI();
+          let imageStore = await this.fetchImages();
           StorageService.setImageStore(imageStore);
           this.imageStore = imageStore;
 
@@ -90,8 +118,8 @@ module.factory('ImageService', [
         }
       },
 
-      loadMoreImageIntoStore: async function() {
-        let newImages = await this.fetchImageFromAPI();
+      loadMoreImageIntoStore: async function () {
+        let newImages = await this.fetchImages();
 
         newImages.normal.forEach(imageUrl => {
           if (this.imageStore.normal.indexOf(imageUrl) === -1) {
@@ -109,9 +137,9 @@ module.factory('ImageService', [
         StorageService.setImageStore(this.imageStore);
       },
 
-      getRewardImage: function(score) {
+      getRewardImage: function (score) {
         var imageUrl = '';
-        if (score % 4 === 0) {
+        if (score % 3 === 0) {
           imageUrl = this.imageStore.sexy.shift();
         } else {
           imageUrl = this.imageStore.normal.shift();
@@ -124,6 +152,7 @@ module.factory('ImageService', [
         }
         return imageUrl;
       },
+
       getPunishImage: () => {
         let wrongImages = ['polla-1.jpg', 'polla-2.jpg', 'polla-3.jpg', 'polla-4.jpg', 'polla-5.jpg'];
         return '/img/wrong/' + getRandomElement(wrongImages);
