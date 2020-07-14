@@ -1,13 +1,14 @@
 <div class="index-page">
   <h2 class="ui horizontal divider header question">
-  {{quiz.question.word}} {{quiz.question.pronounce}}
-  <span class="small">{{quiz.question.type}}</span>
+    {{quiz.question.word}} {{quiz.question.pronounce}}
+    <span class="small">{{quiz.question.type}}</span> <span class="clickable"
+      ng-click="pronounce(quiz.question.word)">👄</span>
   </h2>
 
   <div class="ui grid">
     <div ng-repeat="answer in quiz.answers" class="eight wide column answer">
       <button ng-click="goToResult(answer.meaning)"
-       class="ui blue button medium compact fluid">{{answer.meaning}}</button>
+        class="ui blue button medium compact fluid">{{answer.meaning}}</button>
     </div>
   </div>
 </div>

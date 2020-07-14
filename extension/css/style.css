@@ -5,7 +5,8 @@ body {
   height: 500px;
 }
 
-a, a:focus {
+a,
+a:focus {
   outline: none;
 }
 
@@ -21,7 +22,8 @@ a, a:focus {
   margin-top: 0.5em;
 }
 
-.index-page, .result-page {
+.index-page,
+.result-page {
   text-align: center;
 }
 
@@ -33,6 +35,15 @@ a, a:focus {
   margin-bottom: 1em;
 }
 
-.ui.grid > .column.answer {
+.ui.grid>.column.answer {
   padding-bottom: 0;
+}
+
+.clickable {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  opacity: 1;
 }

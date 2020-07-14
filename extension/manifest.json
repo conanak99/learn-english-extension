@@ -2,11 +2,12 @@
   "manifest_version": 2,
   "name": "Học English cùng gái xinh",
   "description": "Học English cùng gái xinh, vừa học vừa ngắm gái, còn gì tuyệt dzời hơnnnn",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "browser_action": {
     "default_icon": "logo.png",
     "default_popup": "index.html"
   },
-  "permissions": ["activeTab", "storage"],
-  "web_accessible_resources": ["data/*.json"]
+  "icons": { "16": "logo.png", "48": "logo.png", "128": "logo.png" },
+  "permissions": ["storage", "tts"],
+  "web_accessible_resources": ["data/*.json", "audio/*.mp3"]
 }
