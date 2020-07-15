@@ -51,10 +51,6 @@ module.controller('ResultController', [
   'ImageService',
   function ($scope, $location, $routeParams, $anchorScroll, QuizService, ImageService) {
 
-    $scope.linkClick = () => {
-      $location.path(`/`);
-    }
-
     $anchorScroll('top');
     $scope.result = $routeParams.result === '1';
     $scope.word = QuizService.getWord($routeParams.word);
@@ -71,6 +67,42 @@ module.controller('ResultController', [
       loseSfx.play();
 
       QuizService.reset();
+    }
+
+    $scope.linkClick = () => {
+      $location.path(`/`);
+    }
+
+    $scope.pronounce = (word) => {
+      chrome.tts.speak(word, {
+        'lang': 'en-US'
+      })
+    }
+
+    const winTexts = ['Đúng rồi, giỏi quá ahihi! Em thưởng nè 💖',
+      'Hihi anh iu cố lên 😘',
+      'Đúng thêm vài câu nữa là cho thơm 1 cái nàaaaa 😘',
+      'Trồi ôi từ này khó ghê mà anh cũng biết 😍',
+      'Quỷ hà, ngồi học mà cứ lo ngắm người ta hok 😚',
+      'Wow, anh giỏi tiếng Anh quá vậy 🥰',
+      'Hmm, chữ này mà còn không biết là a giận luôn 🥺',
+      'Cố lên anh ơi, học mệt nhớ uống nước nha 🥺',
+      'Ahihi mấy tấm sau hở lắm đó, ngại quá hihi 😚',
+      'Nói nhỏ cho nghe nè, em hâm mộ mấy anh giỏi TA lúm 💖'
+    ]
+    $scope.getWinText = () => {
+      return getRandomElement(winTexts)
+    }
+
+    const loseTexts = ['Học bài lại đi, lêu lêu.....',
+      'Trời, câu dễ vậy cũng không biết',
+      'VN sắp thành cường quốc mà có mấy từ cũng không học được',
+      'Cày nhiều vào anh ơi, học thế này là chết',
+      'Cố lên, hồi xưa mình cũng sai miết hà',
+      'Làm lại đi nè, còn nhiều hình gái chưa ngắm mà!',
+    ]
+    $scope.getLoseText = () => {
+      return getRandomElement(loseTexts)
     }
   }
 ]);

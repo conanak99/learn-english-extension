@@ -1,22 +1,3 @@
-function getRandomElement(array) {
-  let randomIndex = Math.floor((Math.random() * array.length));
-  return array[randomIndex];
-}
-
-function shuffleArray(array) {
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-}
-
-function getRandomElements(n, array) {
-  shuffleArray(array)
-  return array.slice(0, n)
-}
-
 module.factory('StorageService', function () {
   return {
     getScore() {
@@ -62,9 +43,9 @@ module.factory('QuizService', [
         let i = 0;
         while (i < numberOfAnswer) {
           let randomAnswer = getRandomElement(words);
-          if (answers.indexOf(randomAnswer) === -1 &&
-            randomAnswer.word.length > 0 &&
-            randomAnswer.meaning.length > 0) {
+          if (answers.every(answer => answer.word !== randomAnswer.word) &&
+            randomAnswer.word && randomAnswer.meaning
+          ) {
             answers.push(randomAnswer);
             i++
           }
@@ -147,14 +128,14 @@ module.factory('ImageService', [
         StorageService.setImageStore(this.imageStore);
 
         // Fetch more if no image found
-        if (this.imageStore.normal.length < 6) {
+        if (this.imageStore.normal.length < 10) {
           this.loadMoreImageIntoStore();
         }
         return imageUrl;
       },
 
       getPunishImage: () => {
-        let wrongImages = ['polla-1.jpg', 'polla-2.jpg', 'polla-3.jpg', 'polla-4.jpg', 'polla-5.jpg'];
+        let wrongImages = ['polla-1.jpg', 'polla-2.jpg', 'polla-3.jpg', 'polla-4.jpg', 'polla-5.jpg', 'bo-1.jpg', 'bo-2.jpg', 'bo-3.png', 'bo-4.jpg'];
         return '/img/wrong/' + getRandomElement(wrongImages);
       }
     };

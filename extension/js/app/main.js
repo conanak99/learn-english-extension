@@ -4,7 +4,7 @@ module.config([
   '$routeProvider',
   '$locationProvider',
   '$compileProvider',
-  function($routeProvider, $locationProvider, $compileProvider) {
+  function ($routeProvider, $locationProvider, $compileProvider) {
     // Remove :unsafe from chrome extension
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|chrome-extension):/);
 

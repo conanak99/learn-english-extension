@@ -1,24 +1,20 @@
 <div class="result-page">
   <div>
     <h2 class="ui horizontal divider header question">
-    {{word.word}} - {{word.meaning}}
+      {{word.word}} - {{word.meaning}} <span class="clickable" ng-click="pronounce(word.word)">👄</span>
     </h2>
 
     <a ng-click="linkClick()" class="ui blue button medium compact fluid">{{text}}</a>
 
-    <div ng-if="result" class="ui positive message">
+    <div class="ui positive message" ng-class="{positive: result, negative: !result}">
       <div class="header">
-        Đúng rồi, giỏi quá ahihi! Em thưởng nè <i class="heart red icon" />
-      </div>
-    </div>
-
-    <div ng-if="!result" class="ui negative message">
-      <div class="header">
-        Học bài lại đi, lêu lêu.....
+        {{result ? getWinText() : getLoseText()}}
       </div>
     </div>
 
     <img class="ui image fluid bordered" ng-src="{{resultUrl}}" />
-    <a ng-click="linkClick()" style="margin-top: 0.8em; margin-bottom:0.8em" class="ui blue button medium compact fluid">{{text}}</a>
+
+    <a ng-click="linkClick()" style="margin-top: 0.8em; margin-bottom:0.8em"
+      class="ui blue button medium compact fluid">{{text}}</a>
   </div>
 </div>
